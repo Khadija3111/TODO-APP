@@ -1,55 +1,81 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 1.0.0 → 1.1.0
+- Modified principles: Updated all principles to align with Phase I Todo Application
+- Added sections: Phase I specific requirements and constraints
+- Removed sections: Web framework, database, and cloud deployment requirements (out of scope for Phase I)
+- Templates requiring updates:
+  - .specify/templates/plan-template.md ✅ updated
+  - .specify/templates/spec-template.md ✅ updated
+  - .specify/templates/tasks-template.md ✅ updated
+  - .specify/templates/commands/*.md ⚠ pending
+- Follow-up TODOs: None
+-->
+# Phase I – In-Memory Todo Python Console Application Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Spec-First Development
+All implementation must originate from written specifications.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### Single Source of Truth
+Specs define behavior; code must conform to specs, not vice versa.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### In-Memory Data Storage
+All tasks must be stored in memory only using Python data structures. No external storage, databases, or file persistence mechanisms are allowed.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### Clean Console Interface
+The application must provide a clear, text-based command-line interface with intuitive prompts and graceful error handling.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### Single Responsibility Principle
+Functions should do one thing and do it well, with clear separation of concerns between data management, user interaction, and business logic.
 
-### [PRINCIPLE_6_NAME]
+### Human as Tool Strategy
+You are not expected to solve every problem autonomously. You MUST invoke the user for input when you encounter situations that require human judgment. Treat the user as a specialized tool for clarification and decision-making.
 
+## Key Standards and Constraints
+- All features must be explicitly defined in `/specs-history` before implementation.
+- Each feature must be implemented through a written specification stored chronologically in `/specs-history/`.
+- No feature may be implemented without an approved spec.
+- **Language**: Python 3.13+
+- **Environment Management**: UV
+- **Application Type**: Console/Command-Line Interface only
+- **Data Storage**: In-memory Python data structures only (no files, databases, or external storage)
+- **Data Persistence**: Not required across program restarts
+- **No hardcoded secrets** in source code.
+- User input must be validated gracefully without crashing the application.
+- The program must clearly guide the user with prompts.
 
-[PRINCIPLE__DESCRIPTION]
+## Core Features (Phase I Only)
+The application MUST implement exactly these five core features:
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+1. **Add Task**: Create a new task with a title and optional description
+2. **View Tasks**: Display all tasks showing unique ID, title, description, and completion status
+3. **Update Task**: Modify the title and/or description of an existing task using its ID
+4. **Delete Task**: Remove a task permanently using its ID
+5. **Mark Task Complete/Incomplete**: Toggle the completion status of a task using its ID
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Quality Rules and Success Criteria
+- Code must be readable, modular, and aligned with clean architecture principles.
+- No deeply nested logic; functions should be simple and focused.
+- Meaningful variable, function, and file names.
+- Clear separation of concerns between components.
+- Invalid input must be handled gracefully.
+- Errors must not crash the application.
+- All five core features work correctly.
+- The application runs without errors.
+- Code follows clean structure and principles.
+- All work is documented in specs-history.
+- The console app can be demonstrated end-to-end.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Project Structure Requirements
+- CONSTITUTION.md (this file)
+- /specs-history/ folder containing all specification files
+- /src/ folder containing Python source code
+- README.md with setup and usage instructions
+- CLAUDE.md with instructions for Claude Code usage
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+Specifications govern behavior. AI accelerates execution. Architecture remains intentional.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.1.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2025-12-30

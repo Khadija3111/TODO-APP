@@ -1,0 +1,75 @@
+{
+  "contract": "Add Task",
+  "version": "1.0",
+  "description": "API contract for adding a new task to the in-memory store",
+  "function": {
+    "name": "add_task",
+    "parameters": [
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The required title of the task"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "default": "",
+        "description": "The optional description of the task"
+      }
+    ],
+    "returns": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Indicates if the operation was successful"
+        },
+        "task_id": {
+          "type": "integer",
+          "description": "The unique ID of the created task (if successful)"
+        },
+        "message": {
+          "type": "string",
+          "description": "Describes the result"
+        },
+        "error": {
+          "type": "string",
+          "description": "Describes the error (if unsuccessful)"
+        }
+      }
+    }
+  },
+  "validation": {
+    "title": {
+      "rules": [
+        "must be a non-empty string after whitespace is trimmed"
+      ]
+    },
+    "description": {
+      "rules": [
+        "can be any string (including empty)"
+      ]
+    }
+  },
+  "success_response": {
+    "example": {
+      "success": true,
+      "task_id": 1,
+      "message": "Task added successfully"
+    }
+  },
+  "error_response": {
+    "example": {
+      "success": false,
+      "message": "Task title cannot be empty",
+      "error": "validation_error"
+    }
+  },
+  "business_rules": [
+    "Each task must have a unique ID that increments automatically",
+    "New tasks are created with completed=False by default",
+    "The title must be trimmed of leading/trailing whitespace before validation"
+  ]
+}
