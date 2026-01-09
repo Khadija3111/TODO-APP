@@ -45,6 +45,36 @@ wheels/
 # VSCode
 .vscode/
 
+# Node.js/Next.js (frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+.next/
+.nuxt/
+dist/
+coverage/
+*.tsbuildinfo
+.nyc_output
+
+# Environment variables
+.env*
+!.env.example
+
+# Frontend build outputs
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+
+# Backend
+backend/node_modules/
+backend/dist/
+backend/build/
+
 # macOS
 .DS_Store
 
@@ -52,3 +82,6 @@ wheels/
 Thumbs.db
 ehthumbs.db
 Icon?
+
+# Testing
+.pytest_cache/

@@ -1,10 +1,18 @@
 [project]
 name = "todo-app"
 version = "0.1.0"
-description = "In-memory Todo CLI Application"
+description = "Todo CLI Application with PostgreSQL Database"
 requires-python = ">=3.13"
 readme = "README.md"
 authors = [{name = "Developer", email = "dev@example.com"}]
+
+dependencies = [
+    "sqlmodel>=0.0.20",
+    "psycopg2-binary>=2.9.9",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "better-auth>=0.0.1b11",
+]
 
 [tool.uv]
 dev-dependencies = [
