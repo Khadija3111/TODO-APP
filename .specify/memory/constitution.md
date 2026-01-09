@@ -1,9 +1,9 @@
 <!--
 Sync Impact Report:
-- Version change: 1.1.0 → 1.2.0
-- Modified principles: Updated to include new intermediate and advanced features
-- Added sections: Priorities & Tags, Search & Filter, Sort, Recurring Tasks, Due Dates & Reminders
-- Removed sections: None
+- Version change: 1.0.0 → 1.1.0
+- Modified principles: Updated all principles to align with Phase I Todo Application
+- Added sections: Phase I specific requirements and constraints
+- Removed sections: Web framework, database, and cloud deployment requirements (out of scope for Phase I)
 - Templates requiring updates:
   - .specify/templates/plan-template.md ✅ updated
   - .specify/templates/spec-template.md ✅ updated
@@ -11,89 +11,71 @@ Sync Impact Report:
   - .specify/templates/commands/*.md ⚠ pending
 - Follow-up TODOs: None
 -->
-# Project Constitution: Evolution of Todo (Hackathon II)
-
-## Project: Evolution of Todo: From CLI to AI-Native Distributed Systems
+# Phase I – In-Memory Todo Python Console Application Constitution
 
 ## Core Principles
 
-• **Spec-Driven Development**: Implementation must always follow specifications managed by GitHub Spec-Kit Plus and Claude Code.
+### Spec-First Development
+All implementation must originate from written specifications.
 
-• **AI-Native Architecture**: Prioritize the use of AI agents (Claude Code, Gordon, kubectl-ai) to build complex systems without writing boilerplate code.
+### Single Source of Truth
+Specs define behavior; code must conform to specs, not vice versa.
 
-• **Clean Code & Statelessness**: Adherence to clean code principles and a strictly stateless backend architecture to ensure scalability and resilience.
+### In-Memory Data Storage
+All tasks must be stored in memory only using Python data structures. No external storage, databases, or file persistence mechanisms are allowed.
 
-• **Evolutionary Growth**: Software must progress systematically from a simple CLI to a cloud-native, event-driven distributed system.
+### Clean Console Interface
+The application must provide a clear, text-based command-line interface with intuitive prompts and graceful error handling.
 
-## Key Standards
+### Single Responsibility Principle
+Functions should do one thing and do it well, with clear separation of concerns between data management, user interaction, and business logic.
 
-• **Technology Stack**:
-    ◦ Backend: Python 3.13+, FastAPI, SQLModel (ORM), and Neon Serverless PostgreSQL.
-    ◦ Frontend: Next.js 14+ (App Router), TypeScript, and Tailwind CSS.
-    ◦ AI Integration: OpenAI Agents SDK and Model Context Protocol (MCP) for tool-based task management.
-    ◦ Infrastructure: Kafka (via Redpanda) for event-driven features and Dapr for distributed runtime building blocks.
+### Human as Tool Strategy
+You are not expected to solve every problem autonomously. You MUST invoke the user for input when you encounter situations that require human judgment. Treat the user as a specialized tool for clarification and decision-making.
 
-• **Security**: Mandatory JWT-based authentication using Better Auth; all API requests must be verified and filtered by user ID.
+## Key Standards and Constraints
+- All features must be explicitly defined in `/specs-history` before implementation.
+- Each feature must be implemented through a written specification stored chronologically in `/specs-history/`.
+- No feature may be implemented without an approved spec.
+- **Language**: Python 3.13+
+- **Environment Management**: UV
+- **Application Type**: Console/Command-Line Interface only
+- **Data Storage**: In-memory Python data structures only (no files, databases, or external storage)
+- **Data Persistence**: Not required across program restarts
+- **No hardcoded secrets** in source code.
+- User input must be validated gracefully without crashing the application.
+- The program must clearly guide the user with prompts.
 
-• **Project Structure**: A Monorepo organization containing /frontend, /backend, and a structured /specs folder is required for single-context AI development.
+## Core Features (Phase I Only)
+The application MUST implement exactly these five core features:
 
-• **API Conventions**: All RESTful endpoints must reside under /api/ and return JSON responses using Pydantic models.
+1. **Add Task**: Create a new task with a title and optional description
+2. **View Tasks**: Display all tasks showing unique ID, title, description, and completion status
+3. **Update Task**: Modify the title and/or description of an existing task using its ID
+4. **Delete Task**: Remove a task permanently using its ID
+5. **Mark Task Complete/Incomplete**: Toggle the completion status of a task using its ID
 
-## Constraints
+## Quality Rules and Success Criteria
+- Code must be readable, modular, and aligned with clean architecture principles.
+- No deeply nested logic; functions should be simple and focused.
+- Meaningful variable, function, and file names.
+- Clear separation of concerns between components.
+- Invalid input must be handled gracefully.
+- Errors must not crash the application.
+- All five core features work correctly.
+- The application runs without errors.
+- Code follows clean structure and principles.
+- All work is documented in specs-history.
+- The console app can be demonstrated end-to-end.
 
-• **Development Workflow**: Developers must read the relevant spec (@specs/...) before implementation and update specs if requirements change.
-
-• **Tooling**: Use uv for Python management and WSL 2 for Windows-based development.
-
-• **Deployment Pipeline**: Initial deployment on Minikube (local Kubernetes) followed by production-grade deployment on DigitalOcean, GKE, or AKS.
-
-• **Messaging**: Kafka must be used for decoupling services like notifications and recurring task engines.
-
-## Success Criteria
-
-• **Feature Completeness**: Successful implementation of all 5 basic features (Add, Delete, Update, View, Mark Complete) across all five phases.
-
-• **Conversational Competence**: The AI Chatbot must accurately manage tasks through natural language via MCP tools while maintaining conversation history in the database.
-
-• **Infrastructure Automation**: Successful containerization and deployment using Helm charts and AI-assisted DevOps tools (kubectl-ai, Kagent).
-
-• **System Integrity**: All claims and features must be verified against the project specifications and documentation in the final GitHub repository.
-
-## Legacy Features (Previously Implemented)
-
-### Already Implemented (Basic CLI)
-- Add / Delete / Update / View tasks
-- Mark as complete
-
-### INTERMEDIATE FEATURES (CLI Usability)
-1. **Priorities & Tags**
-   - Task fields: `priority` (high/med/low), `tags[]` (e.g., work, home)
-   - UI: dropdown for priority, multi-select chips for tags
-   - ✅ Users can set/change priority & tags; list can be filtered by them.
-
-2. **Search & Filter**
-   - Search bar (title/description, case-insensitive)
-   - Filter panel: status, priority, tags, date range
-   - ✅ Real-time results; combined filters work; "no match" message shown.
-
-3. **Sort**
-   - Options: due date, priority, alphabetical, creation date (asc/desc)
-   - Persist choice in local storage
-   - ✅ Selecting a sort instantly reorders the list.
-
-### ADVANCED FEATURES (CLI Intelligence)
-4. **Recurring Tasks**
-   - Field `recurrence` (none, daily, weekly, monthly, custom)
-   - On completion, auto-create next instance with updated due date
-   - ✅ Users set recurrence; completing generates next task preserving other data.
-
-5. **Due Dates & Reminders**
-   - Fields `dueDate` (+ optional `dueTime`)
-   - Date-time picker UI
-   - Browser notifications: 10 min before & at due time, with snooze option
-   - ✅ Notifications fire (with permission); overdue tasks highlighted.
+## Project Structure Requirements
+- CONSTITUTION.md (this file)
+- /specs-history/ folder containing all specification files
+- /src/ folder containing Python source code
+- README.md with setup and usage instructions
+- CLAUDE.md with instructions for Claude Code usage
 
 ## Governance
 Specifications govern behavior. AI accelerates execution. Architecture remains intentional.
 
-**Version**: 2.0.0 | **Ratified**: 2026-01-05 | **Last Amended**: 2026-01-05
+**Version**: 1.1.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2025-12-30
