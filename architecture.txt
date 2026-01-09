@@ -1,0 +1,98 @@
+# Architecture Diagram for Console-Based Todo App
+
+## High-Level Architecture
+
+```
+┌─────────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│   CLI Layer     │    │  Service Layer   │    │    Model Layer   │
+│                 │    │                  │    │                  │
+│  cli_interface  │───▶│   task_store     │───▶│     Task         │
+│                 │    │                  │    │                  │
+│  renderers      │    │  config_service  │    │  (priority,      │
+│                 │    │                  │    │   tags[])        │
+└─────────────────┘    └──────────────────┘    └──────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│  User Input/    │    │ In-Memory       │    │ Data Validation  │
+│  Console Output │    │ Storage         │    │ & Representation │
+└─────────────────┘    └──────────────────┘    └──────────────────┘
+```
+
+## Component Flow
+
+### Add Task Flow:
+```
+User Command: todo add --priority high --tags work,urgent "Task title"
+         │
+         ▼
+    CLI Parser (argparse)
+         │
+         ▼
+    validate_input()
+         │
+         ▼
+    task_store.add_task(title, description, priority, tags)
+         │
+         ▼
+    Task(title, desc, priority, tags, completed=False)
+         │
+         ▼
+    Store in _tasks dict
+         │
+         ▼
+    Return task ID
+```
+
+### List/Filter/Sort Flow:
+```
+User Command: todo list --priority high --sort priority --order desc
+         │
+         ▼
+    CLI Parser
+         │
+         ▼
+    task_store.get_filtered_sorted_tasks(filters, sort_field, sort_order)
+         │
+         ▼
+    Apply filters (status, priority, tags)
+         │
+         ▼
+    Apply sorting (by field, ascending/descending)
+         │
+         ▼
+    render_tasks_with_colors()
+         │
+         ▼
+    Output to console
+```
+
+### Configuration Flow:
+```
+On startup:
+    config_service.load_config() → ~/.todo/config.json
+         │
+         ▼
+    Use stored sort preferences for default behavior
+
+On setting change:
+    config_service.save_config() → ~/.todo/config.json
+```
+
+## File Structure
+
+```
+src/
+├── models/
+│   └── task.py              # Task data model with priority/tags
+├── services/
+│   ├── task_store.py        # Task operations (CRUD + search/filter/sort)
+│   └── config_service.py    # Config file handling
+├── cli/
+│   ├── cli_interface.py     # Command parsing and dispatch
+│   └── renderers.py         # Output formatting with ANSI colors
+└── utils/
+    ├── filters.py           # Filter utility functions
+    ├── search.py            # Search utility functions
+    └── sorters.py           # Sort utility functions
+```
