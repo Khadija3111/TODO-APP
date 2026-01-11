@@ -8,9 +8,9 @@ import TaskForm from './TaskForm';
 
 interface TaskListProps {
   initialTasks: Task[];
-  onTaskUpdate: (task: Task) => void;
+  onTaskUpdate: (task: Task) => Promise<Task>;
   onTaskDelete: (id: string) => void;
-  onTaskCreate: (task: Task) => void;
+  onTaskCreate: (task: Partial<Task>) => Promise<Task>;
 }
 
 export default function TaskList({
@@ -67,11 +67,7 @@ export default function TaskList({
     try {
       const updatedTask = { ...task, completed: !task.completed };
       const result = await onTaskUpdate(updatedTask);
-      if (result) {
-        setTasks(tasks.map(t => t.id === task.id ? result : t));
-      } else {
-        setTasks(tasks.map(t => t.id === task.id ? updatedTask : t));
-      }
+      setTasks(tasks.map(t => t.id === task.id ? result : t));
     } catch (err) {
       setError('Failed to update task');
       // Revert the UI change if API fails
@@ -86,11 +82,7 @@ export default function TaskList({
     setError(null);
     try {
       const result = await onTaskUpdate(updatedTask);
-      if (result) {
-        setTasks(tasks.map(t => t.id === updatedTask.id ? result : t));
-      } else {
-        setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
-      }
+      setTasks(tasks.map(t => t.id === updatedTask.id ? result : t));
     } catch (err) {
       setError('Failed to update task');
       // Revert the UI change if API fails
@@ -100,15 +92,13 @@ export default function TaskList({
     }
   };
 
-  const handleTaskAdd = async (newTask: Omit<Task, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => {
+  const handleTaskAdd = async (newTask: Partial<Task>) => {
     setLoading(true);
     setError(null);
     try {
-      const createdTask = await onTaskCreate(newTask as Task);
-      if (createdTask) {
-        setTasks([...tasks, createdTask]);
-        setShowForm(false);
-      }
+      const createdTask = await onTaskCreate(newTask);
+      setTasks([...tasks, createdTask]);
+      setShowForm(false);
     } catch (err) {
       setError('Failed to create task');
     } finally {
