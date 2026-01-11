@@ -42,6 +42,7 @@ export default function DashboardPage() {
     try {
       const updatedTask = await taskAPI.updateTask(task.id, task);
       setTasks(tasks.map(t => t.id === task.id ? updatedTask : t));
+      return updatedTask;
     } catch (error) {
       console.error('Failed to update task:', error);
       throw error;
@@ -58,16 +59,22 @@ export default function DashboardPage() {
     }
   };
 
-  const handleTaskCreate = async (task: Task) => {
+  const handleTaskCreate = async (task: Partial<Task>) => {
     try {
+      // Ensure required fields are present
+      if (!task.title) {
+        throw new Error('Title is required');
+      }
+
       const newTask = await taskAPI.createTask({
         title: task.title,
         description: task.description,
         priority: task.priority,
         category: task.category,
-        completed: task.completed,
+        completed: task.completed || false,
       });
       setTasks([...tasks, newTask]);
+      return newTask;
     } catch (error) {
       console.error('Failed to create task:', error);
       throw error;

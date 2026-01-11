@@ -71,7 +71,7 @@ export default function TaskForm({ initialData, onSubmit, onCancel }: TaskFormPr
           <select
             id="priority"
             value={priority}
-            onChange={(e) => setPriority(e.target.value)}
+            onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high')}
             className="mt-1 block w-full bg-white border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm text-gray-800"
           >
             <option value="low">Low</option>
