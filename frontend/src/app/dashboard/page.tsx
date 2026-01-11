@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { taskAPI, Task } from '../../lib/api';
+import { taskAPI, Task } from '@/lib/api';
 
 
 import TaskList from '@/components/TaskList';
