@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
-  output: 'export',
+  // Removed output: 'export' to support dynamic features needed for API calls
 };
 
 module.exports = nextConfig;
