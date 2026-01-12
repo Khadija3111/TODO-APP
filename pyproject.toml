@@ -19,5 +19,6 @@ dev-dependencies = [
     "pytest>=8.0.0",
 ]
 
-[project.scripts]
-todo-app = "main:main"
+# Commenting out for Railway deployment
+# [project.scripts]
+# todo-app = "main:app"
