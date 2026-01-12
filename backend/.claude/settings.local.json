@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir .git)"
+      "Bash(dir .git)",
+      "Bash(dir frontend)",
+      "Bash(find . -name \"package.json\" -exec dirname {} ;)",
+      "WebFetch(domain:todo-app-production-b6dc.up.railway.app)"
     ]
   }
 }
