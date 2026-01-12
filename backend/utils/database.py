@@ -1,11 +1,12 @@
 from sqlmodel import create_engine, Session, SQLModel, select
 import os
 
-# Using Neon PostgreSQL database
-NEON_DATABASE_URL = "postgresql://neondb_owner:npg_jftmSdl7g1Ze@ep-empty-brook-a7tg1x3v-pooler.ap-southeast-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+# Get database URL from environment variable (Railway sets this automatically with PostgreSQL addon)
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./todo_app.db")  # Fallback to SQLite for local dev
 
-# In a real application, you would use environment variables for the database URL
-DATABASE_URL = os.getenv("DATABASE_URL", NEON_DATABASE_URL)
+# Handle Railway's PostgreSQL URL format (convert postgres:// to postgresql://)
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(DATABASE_URL, echo=True)
 
