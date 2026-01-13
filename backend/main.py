@@ -48,7 +48,10 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your frontend domain
+    allow_origins=[
+        "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app",  # Your Vercel deployment
+        "https://todo-app-2.vercel.app",  # Main Vercel domain for your project
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
