@@ -8,7 +8,21 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./todo_app.db")  # Fallback 
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-engine = create_engine(DATABASE_URL, echo=True)
+# Configure engine with proper SSL settings for production
+if "postgresql://" in DATABASE_URL:
+    # Production PostgreSQL settings
+    engine = create_engine(
+        DATABASE_URL,
+        echo=False,  # Set to True for debugging
+        pool_pre_ping=True,
+        pool_recycle=300,
+        connect_args={
+            "sslmode": "require",  # Require SSL for PostgreSQL
+        }
+    )
+else:
+    # Local SQLite settings
+    engine = create_engine(DATABASE_URL, echo=True)
 
 def get_session():
     with Session(engine) as session:
