@@ -26,6 +26,10 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     truncated_password = plain_password[:72] if len(plain_password) > 72 else plain_password
     return pwd_context.verify(truncated_password, hashed_password)
 
+
+
+
+
 def get_password_hash(password: str) -> str:
     """Hash a password."""
     # Bcrypt has a 72 character limit, so we truncate if necessary

@@ -26,6 +26,8 @@ def register(user: UserCreate, session: Session = Depends(get_session)):
             detail="User with this email already exists"
         )
 
+
+
     # Create new user
     hashed_password = get_password_hash(user.password)
     db_user = User(
