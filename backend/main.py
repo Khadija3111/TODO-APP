@@ -25,6 +25,7 @@ app.add_middleware(
     allow_origins=[
         "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app",  # Your Vercel deployment
         "https://todo-app-2.vercel.app",  # Main Vercel domain for your project
+        "https://todo-app-2-n4bn0oin0-khadija3111s-projects.vercel.app",  # Another Vercel deployment variant
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -40,7 +41,17 @@ app.include_router(tasks_router, prefix="/api")
 async def add_cors_headers(request: Request, call_next):
     response = await call_next(request)
     # Add CORS headers to all responses, including error responses
-    response.headers.setdefault("Access-Control-Allow-Origin", "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app")
+    # Allow the origin that made the request
+    origin = request.headers.get("origin")
+    if origin and any(allowed_origin in origin for allowed_origin in [
+        "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app",
+        "https://todo-app-2.vercel.app",
+        "https://todo-app-2-n4bn0oin0-khadija3111s-projects.vercel.app"
+    ]):
+        response.headers.setdefault("Access-Control-Allow-Origin", origin)
+    else:
+        # Default to the first allowed origin if the request origin isn't recognized
+        response.headers.setdefault("Access-Control-Allow-Origin", "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app")
     response.headers.setdefault("Access-Control-Allow-Credentials", "true")
     response.headers.setdefault("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
     response.headers.setdefault("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Requested-With")
