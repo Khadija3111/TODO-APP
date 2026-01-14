@@ -33,7 +33,7 @@ function getAuthHeaders(): { [key: string]: string } {
 export const authAPI = {
   async register(email: string, password: string): Promise<{ user: User; access_token: string } | null> {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      const response = await fetch(`${API_BASE_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const authAPI = {
 
   async login(email: string, password: string): Promise<{ user: User; access_token: string } | null> {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -93,7 +93,7 @@ export const authAPI = {
 
   async getProfile(): Promise<User | null> {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+      const response = await fetch(`${API_BASE_URL}/me`, {
         method: 'GET',
         headers: getAuthHeaders(),
       });
