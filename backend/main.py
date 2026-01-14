@@ -25,7 +25,7 @@ app.add_middleware(
     allow_origins=[
         "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app",  # Your Vercel deployment
         "https://todo-app-2.vercel.app",  # Main Vercel domain for your project
-
+        "https://todo-app-2-n4bn0oin0-khadija3111s-projects.vercel.app",  # Another Vercel deployment variant
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -46,7 +46,7 @@ async def add_cors_headers(request: Request, call_next):
     if origin and any(allowed_origin in origin for allowed_origin in [
         "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app",
         "https://todo-app-2.vercel.app",
-  
+        "https://todo-app-2-n4bn0oin0-khadija3111s-projects.vercel.app"
     ]):
         response.headers.setdefault("Access-Control-Allow-Origin", origin)
     else:
