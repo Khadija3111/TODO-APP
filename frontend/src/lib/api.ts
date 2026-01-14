@@ -21,7 +21,7 @@ export interface Task {
 }
 
 // Base API configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-app-production-b6dc.up.railway.app/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-app-production-b6dc.up.railway.app';
 
 // Helper function to get auth headers
 function getAuthHeaders(): { [key: string]: string } {
