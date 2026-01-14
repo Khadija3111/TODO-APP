@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 # Direct imports
@@ -24,7 +24,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app",  # Your Vercel deployment
-  
+        "https://todo-app-2.vercel.app",  # Main Vercel domain for your project
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -34,6 +34,17 @@ app.add_middleware(
 # Include API routers
 app.include_router(auth_router, prefix="/api")
 app.include_router(tasks_router, prefix="/api")
+
+# Custom middleware to ensure CORS headers are added to all responses, including errors
+@app.middleware("http")
+async def add_cors_headers(request: Request, call_next):
+    response = await call_next(request)
+    # Add CORS headers to all responses, including error responses
+    response.headers.setdefault("Access-Control-Allow-Origin", "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app")
+    response.headers.setdefault("Access-Control-Allow-Credentials", "true")
+    response.headers.setdefault("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+    response.headers.setdefault("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Requested-With")
+    return response
 
 @app.get("/")
 def read_root():

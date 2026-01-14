@@ -55,7 +55,11 @@
       "Bash(uv pip install psycopg2-binary)",
       "Bash(timeout 10 uv run uvicorn backend.main:app --port 8000)",
       "Bash(npm run build)",
-      "Bash(xargs dirname)"
+      "Bash(xargs dirname)",
+      "Bash(for file in tmpclaude-*.cwd)",
+      "Bash(do rm \"$file\")",
+      "Bash(done)",
+      "Bash(find . -name \"tmpclaude-*.cwd\" -delete)"
     ]
   }
 }
