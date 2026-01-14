@@ -33,7 +33,7 @@ function getAuthHeaders(): { [key: string]: string } {
 export const authAPI = {
   async register(email: string, password: string): Promise<{ user: User; access_token: string } | null> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/register`, {
+      const response = await fetch(`${API_BASE_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const authAPI = {
 
   async login(email: string, password: string): Promise<{ user: User; access_token: string } | null> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/login`, {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -93,7 +93,7 @@ export const authAPI = {
 
   async getProfile(): Promise<User | null> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/me`, {
+      const response = await fetch(`${API_BASE_URL}/me`, {
         method: 'GET',
         headers: getAuthHeaders(),
       });
@@ -115,7 +115,7 @@ export const authAPI = {
 export const taskAPI = {
   async getAllTasks(completed?: boolean): Promise<Task[]> {
     try {
-      let url = `${API_BASE_URL}/api/tasks`;
+      let url = `${API_BASE_URL}/tasks`;
       if (completed !== undefined) {
         url += `?completed=${completed}`;
       }
@@ -139,7 +139,7 @@ export const taskAPI = {
 
   async createTask(taskData: Omit<Task, 'id' | 'user_id' | 'created_at' | 'updated_at'>): Promise<Task> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/tasks`, {
+      const response = await fetch(`${API_BASE_URL}/tasks`, {
         method: 'POST',
         headers: {
           ...getAuthHeaders(),
@@ -163,7 +163,7 @@ export const taskAPI = {
 
   async updateTask(id: string, taskData: Partial<Task>): Promise<Task> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: 'PUT',
         headers: {
           ...getAuthHeaders(),
@@ -187,7 +187,7 @@ export const taskAPI = {
 
   async deleteTask(id: string): Promise<void> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders(),
       });
@@ -204,7 +204,7 @@ export const taskAPI = {
 
   async toggleTaskCompletion(id: string): Promise<Task> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/tasks/${id}/complete`, {
+      const response = await fetch(`${API_BASE_URL}/tasks/${id}/complete`, {
         method: 'PUT',
         headers: getAuthHeaders(),
       });
