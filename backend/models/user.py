@@ -6,9 +6,14 @@ class UserBase(SQLModel):
     email: str = Field(unique=True, index=True)
 
 import uuid
+from typing import TYPE_CHECKING
+
+# For compatibility with Pydantic v2 and SQLModel
+def generate_uuid() -> str:
+    return str(uuid.uuid4())
 
 class User(UserBase, table=True):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
+    id: str = Field(default_factory=generate_uuid, primary_key=True)
     email: str = Field(unique=True, index=True)
     hashed_password: str
     created_at: datetime = Field(default_factory=datetime.now)

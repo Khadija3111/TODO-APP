@@ -18,8 +18,12 @@ class TaskBase(SQLModel):
 
 import uuid
 
+# For compatibility with Pydantic v2 and SQLModel
+def generate_task_uuid() -> str:
+    return str(uuid.uuid4())
+
 class Task(TaskBase, table=True):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
+    id: str = Field(default_factory=generate_task_uuid, primary_key=True)
     user_id: Optional[str] = Field(default=None, foreign_key="user.id", index=True)
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
