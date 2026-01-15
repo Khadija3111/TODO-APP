@@ -25,16 +25,25 @@ class TaskBase(SQLModel):
     category: Optional[str] = None
 
 class Task(TaskBase, table=True):
-    id: str = Field(default_factory=generate_task_uuid, primary_key=True)
+    id: str = Field(default=None, primary_key=True)
     user_id: Optional[str] = Field(default=None, foreign_key="user.id", index=True)
-    created_at: datetime = Field(default_factory=get_current_task_datetime)
-    updated_at: datetime = Field(default_factory=get_current_task_datetime)
+    created_at: datetime = Field(default=None)
+    updated_at: datetime = Field(default=None)
 
     # Additional field for tags as JSON string
     tags: Optional[str] = Field(default=None)  # Storing tags as JSON string
 
     # Relationship to user - using string reference to avoid circular import
     user: Optional["User"] = Relationship(back_populates="tasks")
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        if self.id is None:
+            self.id = generate_task_uuid()
+        if self.created_at is None:
+            self.created_at = get_current_task_datetime()
+        if self.updated_at is None:
+            self.updated_at = get_current_task_datetime()
 
     @property
     def tags_list(self) -> list[str]:
