@@ -2,7 +2,15 @@ from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional
 from datetime import datetime
 from enum import Enum
+import uuid
 import json
+
+# For compatibility with Pydantic v2 and SQLModel
+def generate_task_uuid() -> str:
+    return str(uuid.uuid4())
+
+def get_current_task_datetime() -> datetime:
+    return datetime.now()
 
 class PriorityEnum(str, Enum):
     low = "low"
@@ -16,15 +24,6 @@ class TaskBase(SQLModel):
     priority: Optional[PriorityEnum] = PriorityEnum.medium
     category: Optional[str] = None
 
-import uuid
-
-# For compatibility with Pydantic v2 and SQLModel
-def generate_task_uuid() -> str:
-    return str(uuid.uuid4())
-
-def get_current_task_datetime() -> datetime:
-    return datetime.now()
-
 class Task(TaskBase, table=True):
     id: str = Field(default_factory=generate_task_uuid, primary_key=True)
     user_id: Optional[str] = Field(default=None, foreign_key="user.id", index=True)
@@ -34,7 +33,7 @@ class Task(TaskBase, table=True):
     # Additional field for tags as JSON string
     tags: Optional[str] = Field(default=None)  # Storing tags as JSON string
 
-    # Relationship to user
+    # Relationship to user - using string reference to avoid circular import
     user: Optional["User"] = Relationship(back_populates="tasks")
 
     @property

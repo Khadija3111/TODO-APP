@@ -31,13 +31,6 @@ def get_session():
 # Function to initialize the database tables
 def create_db_and_tables():
     # Import models here to ensure they're registered with SQLModel metadata
-    # Using a try-except to handle potential duplicate registration issues
-    try:
-        from ..models.user import User  # noqa: F401
-    except:
-        pass
-    try:
-        from ..models.task import Task  # noqa: F401
-    except:
-        pass
+    # Import the models module to register all models with SQLModel
+    from ..models import User, Task  # noqa: F401
     SQLModel.metadata.create_all(engine)
