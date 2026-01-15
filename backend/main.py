@@ -1,6 +1,9 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+import logging
 
 # Direct imports
 from api.auth import router as auth_router
@@ -17,6 +20,27 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Todo API",
     lifespan=lifespan
+)
+
+# Custom middleware to handle HTTPS properly behind reverse proxies like Railway
+class HTTPSRedirectMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        # Check if the request came through HTTPS via headers set by Railway/Cloudflare
+        if (request.headers.get('x-forwarded-proto') == 'https' or
+            request.headers.get('x-forwarded-scheme') == 'https'):
+            # Update the request URL to reflect HTTPS
+            request.scope['scheme'] = 'https'
+
+        response = await call_next(request)
+        return response
+
+# Add the HTTPS redirect middleware
+app.add_middleware(HTTPSRedirectMiddleware)
+
+# Add trusted host middleware for proper HTTPS handling behind proxies
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"]  # Adjust this in production for security
 )
 
 # Add CORS middleware
