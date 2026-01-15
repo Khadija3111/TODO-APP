@@ -1,7 +1,7 @@
 from datetime import timedelta
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from models.user import User, UserCreate, UserRead
 from utils.auth import (
@@ -19,7 +19,7 @@ router = APIRouter(tags=["auth"])
 def register(user: UserCreate, session: Session = Depends(get_session)):
     """Register a new user."""
     # Check if user already exists
-    existing_user = session.query(User).filter(User.email == user.email).first()
+    existing_user = session.exec(select(User).where(User.email == user.email)).first()
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -45,7 +45,7 @@ def register(user: UserCreate, session: Session = Depends(get_session)):
 def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
     """Login a user and return an access token."""
     # Find user by email
-    user = session.query(User).filter(User.email == form_data.username).first()
+    user = session.exec(select(User).where(User.email == form_data.username)).first()
 
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
