@@ -15,7 +15,7 @@ class UserBase(SQLModel):
 
 class User(UserBase, table=True):
     id: str = Field(default_factory=generate_uuid, primary_key=True)
-    email: str = Field(unique=True, index=True)
+    # email field is inherited from UserBase
     hashed_password: str
     created_at: datetime = Field(default_factory=get_current_datetime)
     updated_at: datetime = Field(default_factory=get_current_datetime)
