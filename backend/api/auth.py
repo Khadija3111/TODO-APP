@@ -39,7 +39,12 @@ def register(user: UserCreate, session: Session = Depends(get_session)):
     session.commit()
     session.refresh(db_user)
 
-    return db_user
+    # Return only the fields needed for UserRead to avoid relationship serialization issues
+    return UserRead(
+        id=db_user.id,
+        email=db_user.email,
+        created_at=db_user.created_at
+    )
 
 @router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
