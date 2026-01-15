@@ -12,12 +12,15 @@ from typing import TYPE_CHECKING
 def generate_uuid() -> str:
     return str(uuid.uuid4())
 
+def get_current_datetime() -> datetime:
+    return datetime.now()
+
 class User(UserBase, table=True):
     id: str = Field(default_factory=generate_uuid, primary_key=True)
     email: str = Field(unique=True, index=True)
     hashed_password: str
-    created_at: datetime = Field(default_factory=datetime.now)
-    updated_at: datetime = Field(default_factory=datetime.now)
+    created_at: datetime = Field(default_factory=get_current_datetime)
+    updated_at: datetime = Field(default_factory=get_current_datetime)
 
     # Relationship to tasks
     tasks: List["Task"] = Relationship(back_populates="user")

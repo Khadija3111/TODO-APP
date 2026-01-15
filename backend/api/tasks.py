@@ -32,7 +32,7 @@ def create_task(
 ):
     """Create a new task for the current user."""
     db_task = Task(
-        **task.dict(),
+        **task.model_dump(),
         user_id=current_user.id
     )
     session.add(db_task)
@@ -81,7 +81,7 @@ def update_task(
         )
 
     # Update the task with the provided fields
-    update_data = task_update.dict(exclude_unset=True)
+    update_data = task_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(task, field, value)
 

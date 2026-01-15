@@ -22,11 +22,14 @@ import uuid
 def generate_task_uuid() -> str:
     return str(uuid.uuid4())
 
+def get_current_task_datetime() -> datetime:
+    return datetime.now()
+
 class Task(TaskBase, table=True):
     id: str = Field(default_factory=generate_task_uuid, primary_key=True)
     user_id: Optional[str] = Field(default=None, foreign_key="user.id", index=True)
-    created_at: datetime = Field(default_factory=datetime.now)
-    updated_at: datetime = Field(default_factory=datetime.now)
+    created_at: datetime = Field(default_factory=get_current_task_datetime)
+    updated_at: datetime = Field(default_factory=get_current_task_datetime)
 
     # Additional field for tags as JSON string
     tags: Optional[str] = Field(default=None)  # Storing tags as JSON string
