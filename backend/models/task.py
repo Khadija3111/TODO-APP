@@ -6,10 +6,10 @@ import uuid
 import json
 
 # For compatibility with Pydantic v2 and SQLModel
-def generate_task_uuid() -> str:
+def generate_task_uuid():
     return str(uuid.uuid4())
 
-def get_current_task_datetime() -> datetime:
+def get_current_task_datetime():
     return datetime.now()
 
 class PriorityEnum(str, Enum):

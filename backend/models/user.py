@@ -4,10 +4,10 @@ from datetime import datetime
 import uuid
 
 # For compatibility with Pydantic v2 and SQLModel
-def generate_uuid() -> str:
+def generate_uuid():
     return str(uuid.uuid4())
 
-def get_current_datetime() -> datetime:
+def get_current_datetime():
     return datetime.now()
 
 class UserBase(SQLModel):
