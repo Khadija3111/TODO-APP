@@ -30,8 +30,8 @@ def get_session():
 
 # Function to initialize the database tables
 def create_db_and_tables():
-    # Import models here to ensure they're registered with SQLModel metadata
-    # Import using the full module path to avoid relative import issues
-    import backend.models.user  # noqa: F401
-    import backend.models.task  # noqa: F401
+    # Import models to ensure they're registered with SQLModel metadata
+    # Simply importing the modules will register the models
+    import models.user
+    import models.task
     SQLModel.metadata.create_all(engine)
