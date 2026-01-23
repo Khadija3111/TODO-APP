@@ -69,8 +69,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app",  # Your Vercel deployment
-        "https://todo-app-2.vercel.app",  # Main Vercel domain for your project
-        "https://todo-app-2-n4bn0oin0-khadija3111s-projects.vercel.app",  # Another Vercel deployment variant
+        "https://todo-app-2-five.vercel.app",  # Your other Vercel deployment
+        "https://khadija222-to-do-app-chatbot-phase.hf.space",  # Your Hugging Face Space
         "http://localhost:3000",  # Local frontend development
         "http://localhost:3001",  # Alternative local frontend port
         "http://localhost:3002",  # Another alternative local frontend port
@@ -105,8 +105,8 @@ async def add_cors_headers(request: Request, call_next):
     origin = request.headers.get("origin")
     if origin and any(allowed_origin in origin for allowed_origin in [
         "https://todo-app-2-git-001-todo-fullstack-web-khadija3111s-projects.vercel.app",
-        "https://todo-app-2.vercel.app",
-        "https://todo-app-2-n4bn0oin0-khadija3111s-projects.vercel.app",
+        "https://todo-app-2-five.vercel.app",
+        "https://khadija222-to-do-app-chatbot-phase.hf.space",
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:3002"
