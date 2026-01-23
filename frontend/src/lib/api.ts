@@ -21,7 +21,10 @@ export interface Task {
 }
 
 // Base API configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-app-production-b6dc.up.railway.app';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ||
+  (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+    ? 'http://127.0.0.1:8000'
+    : 'https://khadija222-to-do-app-chatbot-phase.hf.space/');
 
 // Helper function to get auth headers
 function getAuthHeaders(): { [key: string]: string } {

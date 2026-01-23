@@ -1,0 +1,41 @@
+/**
+ * Chatbot Icon Styles
+ */
+
+.chatbot-icon-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chatbot-icon-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.chatbot-icon-button:hover {
+  background-color: #4338ca;
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.chatbot-icon-button:focus {
+  outline: 2px solid #818cf8;
+  outline-offset: 2px;
+}
+
+.chatbot-icon-svg {
+  width: 24px;
+  height: 24px;
+}

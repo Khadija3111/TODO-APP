@@ -27,11 +27,11 @@ class TaskBase(SQLModel):
 class Task(TaskBase, table=True):
     id: str = Field(default=None, primary_key=True)
     user_id: Optional[str] = Field(default=None, foreign_key="user.id", index=True)
-    created_at: datetime = Field(default=None)
-    updated_at: datetime = Field(default=None)
+    created_at: datetime = Field(default=None, nullable=False)
+    updated_at: datetime = Field(default=None, nullable=False)
 
     # Additional field for tags as JSON string
-    tags: Optional[str] = Field(default=None)  # Storing tags as JSON string
+    tags: Optional[str] = Field(default=None, nullable=True)  # Storing tags as JSON string
 
     # Relationship to user - using string reference to avoid circular import
     user: Optional["User"] = Relationship(back_populates="tasks")

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import Layout from "@/components/Layout";
+import ChatManager from "@/components/ChatManager";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <Layout>{children}</Layout>
+          <ChatManager />
         </AuthProvider>
       </body>
     </html>

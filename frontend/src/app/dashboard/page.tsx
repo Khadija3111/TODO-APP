@@ -40,6 +40,28 @@ export default function DashboardPage() {
     loadTasks();
   }, [isAuthenticated]);
 
+  // Listen for task update events triggered by the chatbot
+  useEffect(() => {
+    const handleTaskUpdateEvent = async () => {
+      if (isAuthenticated()) {
+        try {
+          const tasksData = await taskAPI.getAllTasks();
+          setTasks(tasksData);
+        } catch (error) {
+          console.error('Failed to reload tasks after chatbot update:', error);
+        }
+      }
+    };
+
+    // Add event listener for task updates
+    window.addEventListener('taskUpdate', handleTaskUpdateEvent);
+
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('taskUpdate', handleTaskUpdateEvent);
+    };
+  }, [isAuthenticated]);
+
   const handleTaskUpdate = async (task: Task) => {
     try {
       const updatedTask = await taskAPI.updateTask(task.id, task);

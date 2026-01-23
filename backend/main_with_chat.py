@@ -10,29 +10,17 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# Direct imports - including chat router
+# Direct imports - temporarily including chat router to test
 from api.auth import router as auth_router
 from api.tasks import router as tasks_router
-from api.chat import router as chat_router  # Included chat router
+from api.chat import router as chat_router  # Including chat router
 from utils.database import create_db_and_tables
 
-
-# Initialize the database when the app starts
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Initialize database tables on startup
-    try:
-        create_db_and_tables()
-        print("Database tables created successfully")
-    except Exception as e:
-        print(f"Error creating database tables: {e}")
-        # Continue anyway to allow the server to start
-    yield
-    # Cleanup on shutdown if needed
+# Temporarily removing lifespan to avoid circular import issues
+# Database tables will be created manually or through migrations
 
 app = FastAPI(
-    title="Todo API",
-    lifespan=lifespan  # Enable lifespan to initialize database
+    title="Todo API"
 )
 
 # Skip database initialization for now to avoid circular import issues
@@ -127,12 +115,5 @@ async def add_cors_headers(request: Request, call_next):
 @app.get("/")
 def read_root():
     return {"Hello": "World", "message": "Welcome to the Todo API"}
-
-
-@app.get("/favicon.ico", include_in_schema=False)
-def favicon():
-    # Return empty response with 204 No Content to prevent browser from showing 404 error
-    from fastapi.responses import Response
-    return Response(status_code=204)
 
 # This is the main entry point for the FastAPI application
