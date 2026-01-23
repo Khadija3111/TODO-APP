@@ -45,14 +45,17 @@ export const authAPI = {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Registration failed');
+        const errorData = await response.json().catch(() => ({ detail: 'Invalid response from server' }));
+        throw new Error(errorData.detail || `Registration failed (${response.status})`);
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
       console.error('Registration error:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network error: Unable to connect to the server. Please check your internet connection and try again.');
+      }
       throw error;
     }
   },
@@ -71,8 +74,8 @@ export const authAPI = {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Login failed');
+        const errorData = await response.json().catch(() => ({ detail: 'Invalid response from server' }));
+        throw new Error(errorData.detail || `Login failed (${response.status})`);
       }
 
       const data = await response.json();
@@ -85,6 +88,9 @@ export const authAPI = {
       return data;
     } catch (error) {
       console.error('Login error:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network error: Unable to connect to the server. Please check your internet connection and try again.');
+      }
       throw error;
     }
   },
@@ -102,13 +108,17 @@ export const authAPI = {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch user profile');
+        const errorData = await response.json().catch(() => ({ detail: 'Invalid response from server' }));
+        throw new Error(errorData.detail || `Failed to fetch user profile (${response.status})`);
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
       console.error('Profile fetch error:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network error: Unable to connect to the server. Please check your internet connection and try again.');
+      }
       throw error;
     }
   }
@@ -129,13 +139,17 @@ export const taskAPI = {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch tasks');
+        const errorData = await response.json().catch(() => ({ detail: 'Invalid response from server' }));
+        throw new Error(errorData.detail || `Failed to fetch tasks (${response.status})`);
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
       console.error('Get tasks error:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network error: Unable to connect to the server. Please check your internet connection and try again.');
+      }
       throw error;
     }
   },
@@ -152,14 +166,17 @@ export const taskAPI = {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Failed to create task');
+        const errorData = await response.json().catch(() => ({ detail: 'Invalid response from server' }));
+        throw new Error(errorData.detail || `Failed to create task (${response.status})`);
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
       console.error('Create task error:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network error: Unable to connect to the server. Please check your internet connection and try again.');
+      }
       throw error;
     }
   },

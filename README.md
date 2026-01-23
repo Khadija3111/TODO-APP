@@ -174,9 +174,9 @@ frontend/
 ## API Endpoints
 
 ### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/auth/me` - Get current user profile
+- `POST /api/register` - User registration
+- `POST /api/login` - User login
+- `GET /api/me` - Get current user profile
 
 ### Task Management
 - `GET /api/tasks` - Get all tasks
