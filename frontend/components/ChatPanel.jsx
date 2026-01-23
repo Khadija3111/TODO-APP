@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { sendChatMessage } from '../utils/api';
 import './ChatPanel.css';
 
-const ChatPanel = ({ userId, isOpen, onClose, onToggleVisibility, onTaskUpdate }) => {
+const ChatPanel = ({ userId, isOpen, onClose, onToggleVisibility, onTaskUpdate = () => {} }) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);

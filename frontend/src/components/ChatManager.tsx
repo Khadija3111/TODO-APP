@@ -37,6 +37,12 @@ export default function ChatManager() {
           isOpen={isChatPanelOpen}
           onClose={closeChatPanel}
           onToggleVisibility={toggleChatPanel}
+          onTaskUpdate={async (task) => {
+            // Placeholder function to satisfy TypeScript requirement
+            // Actual implementation would come from parent component
+            console.warn('onTaskUpdate called but not implemented in ChatManager context');
+            return task;
+          }}
         />
       )}
       {!isChatPanelOpen && (
